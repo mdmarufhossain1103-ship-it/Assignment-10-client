@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Bars } from '@gravity-ui/icons';
 import Image from 'next/image';
+import { authClient } from '@/lib/auth-client';
 
-const Navbar = ({ user, role = 'user' }) => {
+const Navbar = () => {
+    const {data: session} = authClient.useSession()
+    const user = session?.user;
+    console.log(user)
     const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dashboardOpen, setDashboardOpen] = useState(false);
@@ -16,6 +20,10 @@ const Navbar = ({ user, role = 'user' }) => {
             ? 'text-blue-600 font-semibold bg-blue-50'
             : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
         }`;
+
+    const handleSignOut = async () => {
+        await authClient.signOut();
+    };
 
     return (
         <nav className="sticky top-0 z-50 bg-white border-b shadow-sm">
@@ -42,59 +50,26 @@ const Navbar = ({ user, role = 'user' }) => {
                         >
                             Browse Artworks
                         </Link>
-
                         {/* Dashboard Dropdown */}
                         {user && (
-                            <div className="relative">
-                                <button
-                                    onClick={() =>
-                                        setDashboardOpen(!dashboardOpen)
-                                    }
-                                    className="px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
-                                >
-                                    Dashboard
-                                </button>
+                            <Link href={`/dashboard/${user?.role}`}>
+                                <div className="relative">
+                                    <button
+                                        onClick={() =>
+                                            setDashboardOpen(!dashboardOpen)
+                                        }
+                                        className="px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+                                    >
+                                        Dashboard
+                                    </button>
 
-                                {dashboardOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 rounded-lg border bg-white shadow-lg">
-                                        {role === 'admin' ? (
-                                            <>
-                                                <Link
-                                                    href="/dashboard/admin"
-                                                    className="block px-4 py-2 hover:bg-gray-100"
-                                                >
-                                                    Admin Panel
-                                                </Link>
-                                                <Link
-                                                    href="/dashboard/users"
-                                                    className="block px-4 py-2 hover:bg-gray-100"
-                                                >
-                                                    Manage Users
-                                                </Link>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Link
-                                                    href="/dashboard"
-                                                    className="block px-4 py-2 hover:bg-gray-100"
-                                                >
-                                                    My Dashboard
-                                                </Link>
-                                                <Link
-                                                    href="/dashboard/profile"
-                                                    className="block px-4 py-2 hover:bg-gray-100"
-                                                >
-                                                    Profile
-                                                </Link>
-                                            </>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+
+                                </div>
+                           </Link>
                         )}
 
                         {user ? (
-                            <button className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                            <button onClick={handleSignOut} className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600">
                                 Logout
                             </button>
                         ) : (
@@ -135,41 +110,12 @@ const Navbar = ({ user, role = 'user' }) => {
 
                         {user && (
                             <>
-                                <div className="px-3 py-2 font-medium text-gray-500">
-                                    Dashboard
-                                </div>
+                                <Link href={`/dashboard/${user?.role}`}>
+                                    <div className="px-3 py-2 font-medium text-gray-500">
+                                        Dashboard
+                                    </div>
+                                </Link>
 
-                                {role === 'admin' ? (
-                                    <>
-                                        <Link
-                                            href="/dashboard/admin"
-                                            className="block px-6 py-2 hover:bg-gray-100"
-                                        >
-                                            Admin Panel
-                                        </Link>
-                                        <Link
-                                            href="/dashboard/users"
-                                            className="block px-6 py-2 hover:bg-gray-100"
-                                        >
-                                            Manage Users
-                                        </Link>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Link
-                                            href="/dashboard"
-                                            className="block px-6 py-2 hover:bg-gray-100"
-                                        >
-                                            My Dashboard
-                                        </Link>
-                                        <Link
-                                            href="/dashboard/profile"
-                                            className="block px-6 py-2 hover:bg-gray-100"
-                                        >
-                                            Profile
-                                        </Link>
-                                    </>
-                                )}
                             </>
                         )}
 
