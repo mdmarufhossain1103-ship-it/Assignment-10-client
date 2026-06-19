@@ -1,0 +1,148 @@
+import { auth } from "@/lib/auth";
+import { Bars, Bell, ChartColumn, ChartPie, ClockArrowRotateLeft, Envelope, Gear, House, LayoutCells, Magnifier, PencilToSquare, Person, PersonFill, Picture, Plus, Star } from "@gravity-ui/icons";
+import { Button, Drawer } from "@heroui/react";
+import { headers } from "next/headers";
+import Link from "next/link";
+
+export async function DashboardSidebar() { 
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    const user = session?.user;
+
+    const dashboardItems = {
+        user: [
+            {
+                icon: ClockArrowRotateLeft,
+                label: "Purchase History",
+                link: "/dashboard/user",
+            },
+            {
+                icon: Picture,
+                label: "Bought Artworks",
+                link: "/dashboard/user/bought-artworks",
+            },
+            {
+                icon: Person,
+                label: "Profile Management",
+                link: "/dashboard/user/profile-management",
+            },
+            {
+                icon: PencilToSquare,
+                label: "CRUD Operation",
+                link: "/dashboard/user/crud-operation",
+            },
+            {
+                icon: Star,
+                label: "Subscription",
+                link: "/dashboard/user/subscription",
+            },
+        ],
+        artist: [
+            {
+                icon: LayoutCells,
+                label: "Manage Artwork",
+                link: "/dashboard/artist",
+            },
+            {
+                icon: Plus,
+                label: "Add Artwork",
+                link: "/dashboard/artist/add-artwork",
+            },
+            {
+                icon: PencilToSquare,
+                label: "Edit Artwork",
+                link: "/dashboard/artist/edit-artwork",
+            },
+            {
+                icon: ChartColumn,
+                label: "Sales History",
+                link: "/dashboard/artist/sales-history",
+            },
+            {
+                icon: Person,
+                label: "Profile Management",
+                link: "/dashboard/artist/profile-management",
+            },
+            {
+                icon: Star,
+                label: "CRUD Operation",
+                link: "/dashboard/artist/curd-operation",
+            },
+        ],
+        admin: [
+            {
+                icon: PersonFill,
+                label: "Management Users",
+                link: "/dashboard/admin",
+            },
+            {
+                icon: Picture,
+                label: "Manage All Artworks",
+                link: "/dashboard/admin/manage-all-artworks",
+            },
+            {
+                icon: ChartColumn,
+                label: "View All Transactions",
+                link: "/dashboard/admin/view-all-transactions",
+            },
+            {
+                icon: ChartPie,
+                label: "Analytics Overview",
+                link: "/dashboard/analytics-overview",
+            },
+            {
+                icon: ChartColumn,
+                label: "Charts",
+                link: "/dashboard/admin/charts",
+            },
+        ]
+    };
+
+    const userRole = user?.role;
+    const navItems = (userRole && dashboardItems[userRole]) ? dashboardItems[userRole] : [];
+
+    const navContent = (
+        <nav className="flex flex-col gap-1">
+            {navItems.map((item) => (
+                <Link
+                    key={item.label}
+                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
+                    type="button"
+                    href={item.link}
+                >
+                    <item.icon className="size-5 text-muted" />
+                    {item.label}
+                </Link>
+            ))}
+        </nav>
+    );
+
+    return (
+        <>
+            <aside className='hidden w-64 shrink-0 border-r border-default p-4 lg:block'>
+                {navContent}
+            </aside>
+            <Drawer>
+                <Button className='lg:hidden' variant="secondary">
+                    <Bars />
+                    Menu
+                </Button>
+                <Drawer.Backdrop>
+                    <Drawer.Content placement="left">
+                        <Drawer.Dialog>
+                            <Drawer.CloseTrigger />
+                            <Drawer.Header>
+                                <Drawer.Heading>Navigation</Drawer.Heading>
+                            </Drawer.Header>
+                            <Drawer.Body>
+                                {navContent}
+                            </Drawer.Body>
+                        </Drawer.Dialog>
+                    </Drawer.Content>
+                </Drawer.Backdrop>
+            </Drawer>
+        </>
+    );
+}

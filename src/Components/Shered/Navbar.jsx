@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Bars } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { authClient } from '@/lib/auth-client';
 
 const Navbar = () => {
+    const router = useRouter();
     const {data: session} = authClient.useSession()
     const user = session?.user;
     console.log(user)
@@ -23,6 +24,7 @@ const Navbar = () => {
 
     const handleSignOut = async () => {
         await authClient.signOut();
+        router.push('/')
     };
 
     return (
@@ -120,7 +122,7 @@ const Navbar = () => {
                         )}
 
                         {user ? (
-                            <button className="w-full rounded-md bg-red-500 px-4 py-2 text-white">
+                            <button onClick={handleSignOut} className="w-full rounded-md bg-red-500 px-4 py-2 text-white">
                                 Logout
                             </button>
                         ) : (

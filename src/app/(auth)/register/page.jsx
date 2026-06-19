@@ -14,7 +14,7 @@ import {
     Radio,
 } from '@heroui/react';
 import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation'; // Changed from 'redirect'
+import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
     const router = useRouter();
@@ -23,8 +23,6 @@ const RegisterPage = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const user = Object.fromEntries(formData.entries());
-
-        // 1. Password validation now safely lives inside the submission lifecycle
         if (user.password !== user.confirmPassword) {
             alert('Passwords do not match');
             return;
@@ -35,11 +33,10 @@ const RegisterPage = () => {
                 email: user.email,
                 password: user.password,
                 name: user.name,
-                role: user.role, // passing role along
+                role: user.role,
                 plan: 'free',
             });
 
-            // 2. Client-side navigation should use router.push instead of redirect()
             router.push('/login');
         } catch (error) {
             console.error("Sign up failed:", error);
