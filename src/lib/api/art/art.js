@@ -7,3 +7,9 @@ export const browseArts = async() =>{
     const data = await res.json();
     return data;
 }
+
+export const artDetails = async(id) => {
+    const res = await fetch(`${baseURL}/artworks/${id}`)
+    const data = await res.json();
+    return data;
+}

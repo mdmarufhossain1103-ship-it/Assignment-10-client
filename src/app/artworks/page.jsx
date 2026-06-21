@@ -1,53 +1,65 @@
 import Link from "next/link";
-import { Card, Button } from "@heroui/react";
+import { Card } from "@heroui/react";
 import { browseArts } from "@/lib/api/art/art";
 
 const ArtworksPage = async () => {
     const arts = await browseArts();
 
     return (
-        <div className="max-w-[80%] mx-auto px-4 py-6 my-10">
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-10">
+            {/* Page Header */}
+            <div className="mb-10 text-center">
+                <h1 className="text-4xl font-bold">Discover Artworks</h1>
+                <p className="text-default-500 mt-2">
+                    Explore unique creations from talented artists
+                </p>
+            </div>
+
+            {/* Art Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                 {arts?.map((art) => (
                     <Card
                         key={art._id}
-                        className="overflow-hidden hover:shadow-lg transition-shadow"
+                        className="group overflow-hidden border border-default-200 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                     >
-                        {/* Artwork Image */}
-                        <div className="aspect-square overflow-hidden">
+                        {/* Image */}
+                        <div className="relative aspect-square overflow-hidden">
                             <img
                                 src={art.image}
                                 alt={art.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
+
+                            {/* Price Badge */}
+                            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow">
+                                <span className="font-semibold text-sm">
+                                    ${art.price}
+                                </span>
+                            </div>
                         </div>
 
-                        <Card.Header className="flex flex-col items-start gap-1">
-                            <Card.Title className="text-sm md:text-base line-clamp-1">
-                                {art.title}
-                            </Card.Title>
+                        {/* Content */}
+                        <div className="flex flex-col flex-1 p-4">
+                            <div className="mb-4">
+                                <h3 className="font-semibold text-lg line-clamp-1">
+                                    {art.title}
+                                </h3>
 
-                            <Card.Description className="line-clamp-1">
-                                By {art.artist}
-                            </Card.Description>
-                        </Card.Header>
+                                <p className="text-sm text-default-500 mt-1">
+                                    by {art.artist}
+                                </p>
+                            </div>
 
-                        <Card.Content>
-                            <p className="font-bold text-lg text-primary">
-                                ${art.price}
-                            </p>
-                        </Card.Content>
-
-                        <Card.Footer>
-                            <Button
-                                href={`/artworks/${art._id}`}
-                                variant="flat"
-                                size="sm"
-                                className="w-full bg-blue-400"
-                            >
-                                View Details
-                            </Button>
-                        </Card.Footer>
+                            {/* Push button to bottom */}
+                            <div className="mt-auto">
+                                <Link
+                                    href={`/artworks/${art._id}`}
+                                    className="flex items-center justify-center w-full rounded-xl bg-blue-400 text-white py-2.5 text-sm font-medium transition hover:bg-neutral-800"
+                                >
+                                    View Details
+                                </Link>
+                            </div>
+                        </div>
                     </Card>
                 ))}
             </div>
