@@ -11,7 +11,6 @@ const Navbar = () => {
     const router = useRouter();
     const {data: session} = authClient.useSession()
     const user = session?.user;
-    console.log(user)
     const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dashboardOpen, setDashboardOpen] = useState(false);
