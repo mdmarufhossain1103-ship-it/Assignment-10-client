@@ -25,7 +25,7 @@ const ArtDetailsPage = async ({ params }) => {
             <div className="min-h-[60vh] flex items-center justify-center px-4">
                 <Card className="p-8 text-center max-w-sm border border-default-200 shadow-sm rounded-2xl">
                     <p className="text-xl font-bold text-danger">Artwork Not Found</p>
-                    <p className="text-sm text-default-400 mt-2">The piece you're looking for might have been moved or archived.</p>
+                    <p className="text-sm text-default-400 mt-2">The piece you are looking for might have been moved or archived.</p>
                     <Link href="/" className="mt-5 inline-flex justify-center px-4 py-2 bg-default-100 hover:bg-default-200 text-default-700 rounded-xl text-sm font-medium transition">
                         Back to Gallery
                     </Link>
