@@ -1,7 +1,12 @@
+import Animation from "@/Components/HeroSection/Animation";
 
 
 export default function Home() {
   return (
-   <div className="text-2xl text-center font-bold">This is home page</div>
+   <div>
+    <div className="my-10">
+        <Animation></Animation>
+    </div>
+   </div>
   );
 }
