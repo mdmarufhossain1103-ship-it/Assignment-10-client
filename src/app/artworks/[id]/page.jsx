@@ -144,11 +144,8 @@ const ArtDetailsPage = async ({ params }) => {
                                         🚫 You own this masterpiece
                                     </Button>
                                 ) : (
-                                    <Link
-                                        href={`/checkout/${art._id || id}`}
-                                        className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide bg-blue-500 dark:bg-white text-white dark:text-black text-center shadow-md hover:opacity-90 active:scale-[0.99] transition-all duration-200"
-                                    >
-                                        Buy Now
+                                    <Link href={'/'} className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide bg-blue-500 dark:bg-white text-white dark:text-black text-center shadow-md hover:opacity-90 active:scale-[0.99] transition-all duration-200">
+                                         Buy Now
                                     </Link>
                                 )
                             ) : (
