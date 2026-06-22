@@ -1,7 +1,7 @@
 import { stripe } from '@/lib/stripe'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { subscription } from '@/lib/actions/payment'
+import { paymentData } from '@/lib/actions/payment'
 
 export default async function Success({ searchParams }) {
     const { session_id } = await searchParams
@@ -25,7 +25,7 @@ export default async function Success({ searchParams }) {
     }
 
     if (status === 'complete') {
-        await subscription({ ...metadata, sessionId: session_id })
+        await paymentData({ ...metadata, sessionId: session_id })
         return (
             <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4 antialiased">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center transition-all">
