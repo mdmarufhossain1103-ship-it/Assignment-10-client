@@ -1,12 +1,29 @@
 'use client'
+import { AddArtData } from '@/lib/api/artist';
+import { authClient } from '@/lib/auth-client';
+import { imageUpload } from '@/lib/imageUpload';
 import { Form, Input, TextArea, Button, Label } from '@heroui/react';
 
 const AddArtworkPage = () => {
-    const handleSubmit = (e) => {
+    const {data: session} = authClient.useSession();
+    const user = session?.user;
+    const handleSubmit = async(e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        console.log(data);
+        const image = await imageUpload(data.image)
+        const art = {
+            ...data,
+            image: image.url,
+            artist: user?.name,
+            createdAt: new Date().toLocaleString(),
+        }
+
+        const result = await AddArtData(art);
+
+        if(result){
+            e.target.reset();
+        }
     };
 
     return (
