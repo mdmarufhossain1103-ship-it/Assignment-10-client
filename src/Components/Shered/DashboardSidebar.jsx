@@ -1,18 +1,17 @@
-import { auth } from "@/lib/auth";
+'use client'
+import { authClient } from "@/lib/auth-client";
 import { Bars, ChartColumn, ChartPie, ClockArrowRotateLeft, LayoutCells, PencilToSquare, Person, PersonFill, Picture, Plus, Star } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
-import { headers } from "next/headers";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export async function DashboardSidebar() {
-    const headerList = await headers();
-    const pathname = headerList.get("x-current-path") || "";
 
-    const session = await auth.api.getSession({
-        headers: headerList
-    });
+export  function DashboardSidebar() {
+    const pathname = usePathname();
+
+   const {data: session} = authClient.useSession();
     const user = session?.user;
-
+    
     
     const getNavLinkClass = (path) =>
         `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${pathname === path
@@ -34,7 +33,7 @@ export async function DashboardSidebar() {
             { icon: PencilToSquare, label: "Edit Artwork", link: "/dashboard/artist/edit-artwork" },
             { icon: ChartColumn, label: "Sales History", link: "/dashboard/artist/sales-history" },
             { icon: Person, label: "Profile Management", link: "/dashboard/artist/profile-management" },
-            { icon: Star, label: "CRUD Operation", link: "/dashboard/artist/curd-operation" },
+            { icon: Star, label: "CRUD Operation", link: "/dashboard/artist/artist-curd-operation" },
         ],
         admin: [
             { icon: PersonFill, label: "Management Users", link: "/dashboard/admin" },

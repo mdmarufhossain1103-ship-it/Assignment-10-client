@@ -21,8 +21,6 @@ export default function ChangePasswordForm({ user }) {
         }
 
 
-        console.log(currentPassword,newPassword)
-
         
 
         setLoading(true);
@@ -34,7 +32,6 @@ export default function ChangePasswordForm({ user }) {
                 revokeOtherSessions: true,
             });
 
-            console.log(data,error);
 
             if (error) {
                 toast.error(error.message || "Failed to update password");
