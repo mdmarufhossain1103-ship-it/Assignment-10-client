@@ -169,6 +169,11 @@ const ArtDetailsPage = async ({ params }) => {
                                             />
                                             <input
                                                 type="hidden"
+                                                name="image"
+                                                defaultValue={art.image}
+                                            />
+                                            <input
+                                                type="hidden"
                                                 name="purchaseDate"
                                                 defaultValue={new Date().toISOString()}
                                             />

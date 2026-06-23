@@ -1,6 +1,6 @@
 'use server'
 
-const baseURL = process.env.NEXT_PUBLIC_SERVER_URL
+const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const subscription = async (data) => {
     const res = await fetch(`${baseURL}/subcription`, {
@@ -26,4 +26,11 @@ export const paymentData = async (data) => {
 
     const resData = await res.json()
     return resData;
+}
+
+
+export const showPaymentData = async(us) =>{
+    const res = await fetch(`${baseURL}/payment`)
+    const data = await res.json();
+    return data;
 }

@@ -18,7 +18,9 @@ export async function POST(request) {
         const title = formData.get('title');
         const productId = formData.get('productId');
         const artist = formData.get('artist');
+        const image = formData.get('image')
         const purchaseDate = formData.get('purchaseDate');
+        
 
         // Create Checkout Sessions from body params.
         const session = await stripe.checkout.sessions.create({
@@ -42,6 +44,7 @@ export async function POST(request) {
                 title,
                 productId,
                 artist,
+                image,
                 purchaseDate,
             },
             mode: 'payment',
