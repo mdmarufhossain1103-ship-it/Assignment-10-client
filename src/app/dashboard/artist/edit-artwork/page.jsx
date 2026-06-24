@@ -1,9 +1,12 @@
+import { ShowArtistArt } from '@/lib/api/artist';
 import React from 'react';
+import EditTable from './EditTable';
 
-const EditArtwork = () => {
+const EditArtwork = async() => {
+    const artworks = await ShowArtistArt();
     return (
         <div>
-            this is edit artwork page.
+            <EditTable artworks={artworks}></EditTable>
         </div>
     );
 };

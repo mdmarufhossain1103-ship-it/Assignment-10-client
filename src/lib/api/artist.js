@@ -20,3 +20,25 @@ export const ShowArtistArt = async() =>{
     const data = await res.json();
     return data;
 }
+
+export const deleteArtwork = async(id) =>{
+    const res = await fetch(`${baseURL}/artist/artworks/${id}`,{
+        method: 'DELETE',
+    })
+
+    const data = await res.json();
+    return data;
+}
+
+export const updateArtwork = async(id,artworksData) =>{
+    const res = await fetch(`${baseURL}/artist/artworks/${id}`,{
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(artworksData)
+    })
+
+    const data = await res.json();
+    return data;
+}

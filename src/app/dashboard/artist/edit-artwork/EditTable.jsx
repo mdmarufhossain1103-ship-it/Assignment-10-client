@@ -1,16 +1,11 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-    Table,
-    Button,
-    Modal,
-} from '@heroui/react'
+import { Table, Button, Modal } from '@heroui/react'
+import { Pencil } from '@gravity-ui/icons'
+import { updateArtwork } from '@/lib/api/artist'
 
-import { Pencil, TrashBin } from '@gravity-ui/icons'
-import { deleteArtwork, updateArtwork } from '@/lib/api/artist'
-
-const ArtistTable = ({ artworks: initialArtworks }) => {
+const EditTable = ({ artworks: initialArtworks }) => {
     const [artworks, setArtworks] = useState(initialArtworks)
 
     const [isOpen, setIsOpen] = useState(false)
@@ -25,24 +20,6 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
         setTitle(artwork.title)
         setPrice(artwork.price)
         setIsOpen(true)
-    }
-
-    // DELETE
-    const handleDelete = async (id) => {
-        const ok = confirm('Delete this artwork?')
-        if (!ok) return
-
-        try {
-            const res = await deleteArtwork(id)
-
-            if (res.deletedCount > 0) {
-                setArtworks((prev) =>
-                    prev.filter((a) => a._id !== id)
-                )
-            }
-        } catch (err) {
-            console.log(err)
-        }
     }
 
     // UPDATE
@@ -86,7 +63,7 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
                 <Table.ScrollContainer>
                     <Table.Content aria-label="artworks table">
 
-                        {/* HEADER (FIX APPLIED HERE) */}
+                        {/* HEADER */}
                         <Table.Header>
                             <Table.Column isRowHeader>
                                 Title
@@ -114,33 +91,17 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
                                     </Table.Cell>
 
                                     <Table.Cell>
-                                        <div className="flex gap-2">
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                color="primary"
-                                                variant="flat"
-                                                onPress={() =>
-                                                    handleEdit(artwork)
-                                                }
-                                            >
-                                                <Pencil />
-                                            </Button>
-
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                color="danger"
-                                                variant="flat"
-                                                onPress={() =>
-                                                    handleDelete(
-                                                        artwork._id
-                                                    )
-                                                }
-                                            >
-                                                <TrashBin />
-                                            </Button>
-                                        </div>
+                                        <Button
+                                            isIconOnly
+                                            size="sm"
+                                            color="primary"
+                                            variant="flat"
+                                            onPress={() =>
+                                                handleEdit(artwork)
+                                            }
+                                        >
+                                            <Pencil />
+                                        </Button>
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
@@ -212,4 +173,4 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
     )
 }
 
-export default ArtistTable
+export default EditTable
