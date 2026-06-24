@@ -10,8 +10,6 @@ export default function AdminManagementTable({ initialUsers }) {
         try {
             const result = await updateRole(id, { role: newRole });
 
-            console.log(result);
-
             setUsers((prevUsers) =>
                 prevUsers.map((user) =>
                     user._id === id

@@ -42,3 +42,10 @@ export const updateArtwork = async(id,artworksData) =>{
     const data = await res.json();
     return data;
 }
+
+
+export const getAnalytics = async() => {
+    const res = await fetch(`${baseURL}/admin/analytics`)
+    const data = await res.json();
+    return data;
+}
