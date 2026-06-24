@@ -42,6 +42,7 @@ export async function POST(request) {
                 userID: user?.id,
                 userEmail: user?.email,
                 userName: user?.name,
+                paymentType: 'purchase',
                 title,
                 productId,
                 artist,

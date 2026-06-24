@@ -29,3 +29,9 @@ export const allArtwork = async() =>{
     const data = await res.json();
     return data;
 }
+
+export const getAllPaymentHistory = async() =>{
+    const res = await fetch(`${baseURL}/admin/payment`)
+    const data = await res.json();
+    return data;
+}
