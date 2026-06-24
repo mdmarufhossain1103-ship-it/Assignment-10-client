@@ -23,3 +23,9 @@ export const updateRole = async(id,data) =>{
     const Updatedata = await res.json();
     return Updatedata;
 }
+
+export const allArtwork = async() =>{
+    const res = await fetch(`${baseURL}/all/artworks`)
+    const data = await res.json();
+    return data;
+}
