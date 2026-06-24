@@ -33,7 +33,6 @@ export  function DashboardSidebar() {
             { icon: PencilToSquare, label: "Edit Artwork", link: "/dashboard/artist/edit-artwork" },
             { icon: ChartColumn, label: "Sales History", link: "/dashboard/artist/sales-history" },
             { icon: Person, label: "Profile Management", link: "/dashboard/artist/profile-management" },
-            { icon: Star, label: "CRUD Operation", link: "/dashboard/artist/artist-curd-operation" },
         ],
         admin: [
             { icon: PersonFill, label: "Management Users", link: "/dashboard/admin" },

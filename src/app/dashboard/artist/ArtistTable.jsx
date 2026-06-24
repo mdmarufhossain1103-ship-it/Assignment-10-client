@@ -133,6 +133,7 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
                                                 size="sm"
                                                 color="danger"
                                                 variant="flat"
+                                                className={'text-red-500'}
                                                 onPress={() =>
                                                     handleDelete(
                                                         artwork._id
