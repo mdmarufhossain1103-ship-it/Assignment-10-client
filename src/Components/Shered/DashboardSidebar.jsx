@@ -38,7 +38,7 @@ export  function DashboardSidebar() {
             { icon: PersonFill, label: "Management Users", link: "/dashboard/admin" },
             { icon: Picture, label: "Manage All Artworks", link: "/dashboard/admin/manage-all-artworks" },
             { icon: ChartColumn, label: "View All Transactions", link: "/dashboard/admin/view-all-transactions" },
-            { icon: ChartPie, label: "Analytics Overview", link: "/dashboard/analytics-overview" },
+            { icon: ChartPie, label: "Analytics Overview", link: "/dashboard/admin/analytics-overview" },
             { icon: ChartColumn, label: "Charts", link: "/dashboard/admin/charts" },
         ]
     };

@@ -1,11 +1,12 @@
-import React from 'react';
+import { getUsers } from "@/lib/api/admin";
+import AdminManagementTable from "./AdminManagementTable";
 
-const AdminDashboardPage = () => {
+
+export default async function AdminDashboardPage() {
+    const initialUsers = await getUsers()
     return (
-        <div>
-            This is admin dashboard page.
-        </div>
+       <div>
+            <AdminManagementTable initialUsers={initialUsers}></AdminManagementTable>
+       </div>
     );
-};
-
-export default AdminDashboardPage;
+}

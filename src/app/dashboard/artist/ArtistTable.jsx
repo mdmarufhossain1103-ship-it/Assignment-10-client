@@ -12,7 +12,7 @@ import { deleteArtwork, updateArtwork } from '@/lib/api/artist'
 
 const ArtistTable = ({ artworks: initialArtworks }) => {
     const [artworks, setArtworks] = useState(initialArtworks)
-    console.log('artist talbe artwork', artworks);
+    // console.log('artist talbe artwork', artworks);
 
     const [isOpen, setIsOpen] = useState(false)
     const [selectedArtwork, setSelectedArtwork] = useState(null)
