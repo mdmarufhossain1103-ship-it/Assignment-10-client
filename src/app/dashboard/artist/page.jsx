@@ -7,7 +7,6 @@ import ArtistTable from './ArtistTable';
 const ArtistDashboardPage = async() => {
 
     const artworks = await ShowArtistArt();
-
     return (
        <div>
             <ArtistTable artworks={artworks}></ArtistTable>

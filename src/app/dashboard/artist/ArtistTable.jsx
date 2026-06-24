@@ -12,6 +12,7 @@ import { deleteArtwork, updateArtwork } from '@/lib/api/artist'
 
 const ArtistTable = ({ artworks: initialArtworks }) => {
     const [artworks, setArtworks] = useState(initialArtworks)
+    console.log('artist talbe artwork', artworks);
 
     const [isOpen, setIsOpen] = useState(false)
     const [selectedArtwork, setSelectedArtwork] = useState(null)
@@ -103,7 +104,7 @@ const ArtistTable = ({ artworks: initialArtworks }) => {
 
                         {/* BODY */}
                         <Table.Body>
-                            {artworks.map((artwork) => (
+                            {artworks?.map((artwork) => (
                                 <Table.Row key={artwork._id}>
                                     <Table.Cell>
                                         {artwork.title}

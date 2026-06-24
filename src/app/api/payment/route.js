@@ -39,8 +39,9 @@ export async function POST(request) {
             ],
             metadata: {
                 price: Number(price),
-                userID: user.id,
-                userEmail: user.email,
+                userID: user?.id,
+                userEmail: user?.email,
+                userName: user?.name,
                 title,
                 productId,
                 artist,

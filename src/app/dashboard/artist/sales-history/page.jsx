@@ -1,10 +1,14 @@
-import React from 'react';
+import React from "react";
+import SalesHistoryTable from "./SalesHistoryTable";
+import { showPaymentData } from "@/lib/actions/payment";
 
-const SalesHistoryPage = () => {
+
+const SalesHistoryPage = async() => {
+    const salesData = await showPaymentData();
     return (
-        <div>
-            this is sales history page.
-        </div>
+       <div>
+            <SalesHistoryTable salesData={salesData} ></SalesHistoryTable>
+       </div>
     );
 };
 
