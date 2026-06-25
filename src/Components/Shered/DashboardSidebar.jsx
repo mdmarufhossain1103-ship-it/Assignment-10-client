@@ -25,7 +25,6 @@ export  function DashboardSidebar() {
             { icon: Picture, label: "Bought Artworks", link: "/dashboard/user/bought-artworks" },
             { icon: Person, label: "Profile Management", link: "/dashboard/user/profile-management" },
             { icon: PencilToSquare, label: "CRUD Operation", link: "/dashboard/user/crud-operation" },
-            { icon: Star, label: "Subscription", link: "/dashboard/user/subscription" },
         ],
         artist: [
             { icon: LayoutCells, label: "Manage Artwork", link: "/dashboard/artist" },

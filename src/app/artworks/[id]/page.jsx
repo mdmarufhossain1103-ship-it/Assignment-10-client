@@ -4,6 +4,7 @@ import { Card, Button, Chip } from "@heroui/react";
 import { artDetails } from '@/lib/api/art/art';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import CommentSection from '@/Components/CommentSection';
 
 const CalendarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-default-400">
@@ -200,9 +201,9 @@ const ArtDetailsPage = async ({ params }) => {
                             </p>
                         </div>
                     </Card>
-
                 </div>
             </div>
+            <CommentSection ideaId={id} session={session}></CommentSection>
         </div>
     );
 };
