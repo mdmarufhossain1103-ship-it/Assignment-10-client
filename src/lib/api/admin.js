@@ -11,7 +11,6 @@ export const getUsers = async() =>{
 
 
 export const updateRole = async(id,data) =>{
-    console.log('user id', id);
     const res = await fetch(`${baseURL}/user/role/${id}`,{
         method: 'PATCH',
         headers: {

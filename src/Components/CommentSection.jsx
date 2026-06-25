@@ -128,7 +128,7 @@ const CommentSection = ({ ideaId, session }) => {
     return (
         <div className='mt-5'>
 
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-6">
+            <div className="bg-black dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-6">
 
                 <h2 className="text-lg font-bold text-white dark:text-white flex items-center gap-2">
                     💬 Discussion ({comments.length})

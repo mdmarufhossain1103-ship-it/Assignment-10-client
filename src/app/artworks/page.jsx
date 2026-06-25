@@ -1,12 +1,41 @@
-import Link from "next/link";
-import { Card } from "@heroui/react";
-import { browseArts } from "@/lib/api/art/art";
+'use client';
+import ArtData from '@/Components/ArtData';
+import { getdata } from '@/lib/api/art/art';
+import React, { useEffect, useState } from 'react';
 
-const ArtworksPage = async () => {
-    const arts = await browseArts();
+const ArtworksPage = () => {
+    const [arts, setArts] = useState(null);
+    const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+    const [sort, setSort] = useState("newest");
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        const fetchArts = async () => {
+            try {
+                setLoading(true);
+                const data = await getdata({
+                    search,
+                    minPrice,
+                    maxPrice,
+                    sort,
+                    page,
+                });
+                setArts(data || []);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchArts();
+    }, [search, minPrice, maxPrice, sort,page]);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="max-w-7xl mx-auto p-5">
             {/* Page Header */}
             <div className="mb-10 text-center">
                 <h1 className="text-4xl font-bold">Discover Artworks</h1>
@@ -15,54 +44,48 @@ const ArtworksPage = async () => {
                 </p>
             </div>
 
-            {/* Art Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                {arts?.map((art) => (
-                    <Card
-                        key={art._id}
-                        className="group overflow-hidden border border-default-200 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
-                    >
-                        {/* Image */}
-                        <div className="relative aspect-square overflow-hidden">
-                            <img
-                                src={art.image}
-                                alt={art.title}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
+            {/* Filters */}
+            <div className="flex flex-col md:flex-row gap-4 mb-8">
+                <input type="text" placeholder='Search by arts title...' value={search} onChange={(e) => setSearch(e.target.value)} className='border border-gray-300 p-3 rounded-lg w-full outline-none focus:ring-2 focus:ring-blue-500' />
 
-                            {/* Price Badge */}
-                            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow">
-                                <span className="font-semibold text-sm">
-                                    ${art.price}
-                                </span>
-                            </div>
-                        </div>
+                <input
+                    type="number"
+                    placeholder="Min Price"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="border p-3 rounded-lg"
+                />
 
-                        {/* Content */}
-                        <div className="flex flex-col flex-1 p-4">
-                            <div className="mb-4">
-                                <h3 className="font-semibold text-lg line-clamp-1">
-                                    {art.title}
-                                </h3>
+                <input
+                    type="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="border p-3 rounded-lg"
+                />
 
-                                <p className="text-sm text-default-500 mt-1">
-                                    by {art.artist}
-                                </p>
-                            </div>
-
-                            {/* Push button to bottom */}
-                            <div className="mt-auto">
-                                <Link
-                                    href={`/artworks/${art._id}`}
-                                    className="flex items-center justify-center w-full rounded-xl bg-blue-400 text-white py-2.5 text-sm font-medium transition hover:bg-neutral-800"
-                                >
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </Card>
-                ))}
+                <select
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                    className="border p-3 rounded-lg"
+                >
+                    <option value="newest">Newest</option>
+                    <option value="priceLowHigh">Price Low → High</option>
+                    <option value="priceHighLow">Price High → Low</option>
+                </select>
             </div>
+
+            {loading && (
+                <div className='text-center text-lg font-medium'>Loading arts...</div>
+            )}
+
+            {!loading && arts?.data?.length === 0 && (
+                <div>No arts found</div>
+            )}
+
+            {!loading && arts?.data?.length > 0 && (
+                <ArtData arts={arts} page={page} setPage={setPage} />
+            )}
         </div>
     );
 };

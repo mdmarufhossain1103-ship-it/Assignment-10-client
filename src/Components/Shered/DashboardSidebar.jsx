@@ -1,6 +1,6 @@
 'use client'
 import { authClient } from "@/lib/auth-client";
-import { Bars, ChartColumn, ChartPie, ClockArrowRotateLeft, LayoutCells, PencilToSquare, Person, PersonFill, Picture, Plus, Star } from "@gravity-ui/icons";
+import { Bars, ChartColumn, ChartPie, ClockArrowRotateLeft, FileDollar, LayoutCells, PencilToSquare, Person, PersonFill, Picture, Plus, Star } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,7 +24,7 @@ export  function DashboardSidebar() {
             { icon: ClockArrowRotateLeft, label: "Purchase History", link: "/dashboard/user" },
             { icon: Picture, label: "Bought Artworks", link: "/dashboard/user/bought-artworks" },
             { icon: Person, label: "Profile Management", link: "/dashboard/user/profile-management" },
-            { icon: PencilToSquare, label: "CRUD Operation", link: "/dashboard/user/crud-operation" },
+            { icon: FileDollar, label: "Subscription", link: "/dashboard/user/subscription" },
         ],
         artist: [
             { icon: LayoutCells, label: "Manage Artwork", link: "/dashboard/artist" },

@@ -6,6 +6,7 @@ import { Card, Button } from '@heroui/react';
 const plans = [
     {
         name: 'Free',
+        planId: 'free',
         price: '$0',
         purchases: '3 paintings',
         description: 'Perfect for getting started.',
@@ -13,6 +14,7 @@ const plans = [
     },
     {
         name: 'Pro',
+        planId: 'pro',
         price: '$9.99',
         purchases: '9 paintings',
         description: 'Great for regular art collectors.',
@@ -20,6 +22,7 @@ const plans = [
     },
     {
         name: 'Premium',
+        planId: 'premium',
         price: '$19.99',
         purchases: 'Unlimited',
         description: 'Unlimited access for serious collectors.',
@@ -90,19 +93,26 @@ const SubscriptionPage = () => {
                                 </p>
                             </div>
 
-                            <form action="/api/subscription" method='POST'>
+
+                            <form action="/api/subscription" method="POST">
+                                <input
+                                    type="hidden"
+                                    name="plan"
+                                    value={plan.planId}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="purchaseDate"
+                                    defaultValue={new Date().toISOString()}
+                                />
+
                                 <Button
-                                type='submit'
-                                    color={
-                                        plan.current
-                                            ? 'default'
-                                            : 'primary'
-                                    }
+                                    type="submit"
+                                    color={plan.current ? 'default' : 'primary'}
                                     className="w-full"
+                                    disabled={plan.current}
                                 >
-                                    {plan.current
-                                        ? 'Current Plan'
-                                        : 'Upgrade Plan'}
+                                    {plan.current ? 'Current Plan' : 'Upgrade Plan'}
                                 </Button>
                             </form>
 

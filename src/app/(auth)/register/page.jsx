@@ -43,6 +43,12 @@ const RegisterPage = () => {
         }
     };
 
+      const handleGoogleLogin = async() =>{
+            const data = await authClient.signIn.social({
+                provider: "google",
+            });
+        }
+
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
             <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xl shadow-slate-100 sm:p-10 transition-all">
@@ -198,6 +204,7 @@ const RegisterPage = () => {
 
                         {/* Google Login */}
                         <Button
+                        onClick={handleGoogleLogin}
                             type="button"
                             variant="bordered"
                             className="w-full font-medium border-blue-200 transition-colors bg-blue-400 text-white"
@@ -209,7 +216,7 @@ const RegisterPage = () => {
                                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
                                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                             </svg>
-                            Google
+                            Continue with Google
                         </Button>
                     </div>
 
