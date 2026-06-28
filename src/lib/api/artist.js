@@ -87,6 +87,12 @@ export const getSalesHistory = async() =>{
     return data;
 }
 
+export const topArtist = async() => {
+    const res = await fetch(`${baseURL}/top-artist/payment`)
+    const data = await res.json();
+    return data;
+}
+
 
 export const getAnalytics = async() => {
     const res = await fetch(`${baseURL}/admin/analytics`)

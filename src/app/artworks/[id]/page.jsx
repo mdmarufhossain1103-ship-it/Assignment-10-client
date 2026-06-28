@@ -21,7 +21,6 @@ const ArtDetailsPage = async ({ params }) => {
         headers: await headers()
     });
     const user = session?.user;
-    console.log(user)
 
     if (!art) {
         return (
