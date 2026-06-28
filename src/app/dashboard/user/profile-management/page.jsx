@@ -1,5 +1,4 @@
 'use client';
-
 import { authClient } from "@/lib/auth-client";
 import EditProfileForm from "./EditProfileForm";
 import ChangePasswordForm from "./ChangePasswordForm";
@@ -9,6 +8,7 @@ export default function UserProfilePage() {
     const { data: session } = authClient.useSession();
 
     const user = session?.user;
+    console.log(user)
 
     return (
         <div className="max-w-5xl mx-auto space-y-6">
@@ -25,7 +25,7 @@ export default function UserProfilePage() {
 
             <div className="grid lg:grid-cols-2 gap-6">
 
-                <EditProfileForm user={user} />
+                <EditProfileForm user={user}  />
 
                 <ChangePasswordForm user={user} />
 

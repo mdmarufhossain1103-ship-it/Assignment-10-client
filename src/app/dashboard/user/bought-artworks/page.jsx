@@ -3,32 +3,6 @@ import Link from 'next/link';
 import { Card } from '@heroui/react';
 import { showPaymentData } from '@/lib/actions/payment';
 
-// const purchasedArtworks = [
-//     {
-//         id: 1,
-//         title: 'Sunset Dreams',
-//         artist: 'John Doe',
-//         image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600',
-//     },
-//     {
-//         id: 2,
-//         title: 'Ocean Breeze',
-//         artist: 'Jane Smith',
-//         image: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600',
-//     },
-//     {
-//         id: 3,
-//         title: 'Mountain View',
-//         artist: 'Alex Brown',
-//         image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600',
-//     },
-//     {
-//         id: 4,
-//         title: 'Golden Horizon',
-//         artist: 'Emma Wilson',
-//         image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600',
-//     },
-// ];
 
 const BoughtArtworks = async() => {
     const purchasedArtworks = await showPaymentData();

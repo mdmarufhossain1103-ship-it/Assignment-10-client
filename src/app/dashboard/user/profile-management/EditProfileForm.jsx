@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, Input, Button } from "@heroui/react";
-import { userEditProfile } from "@/lib/api/user/edit";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
-
-export default function EditProfileForm({user}) {
+export default function EditProfileForm({ user }) {
+    const router = useRouter();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -21,59 +22,51 @@ export default function EditProfileForm({user}) {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        try {
-            const result = await userEditProfile(user.id, {
-                name: name,
-                email: email,
-            });
+        const { data, error } = await authClient.updateUser({
+            name,
+        });
 
-            console.log(result)
+        setLoading(false);
 
-            if (result) {
-                toast.success("Profile updated succssfully!");
-            } else {
-                toast.error("No changes made!");
-            }
-        } catch (error) {
-            toast.error("Something went wrong!");
+        if (error) {
+            toast.error(error.message);
+            return;
         }
-    }
+
+        toast.success("Profile updated successfully!");
+        router.refresh();
+    };
 
     return (
-        <>
-            <Card className="p-6">
+        <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">
+                Edit Profile
+            </h2>
 
-                <h2 className="text-xl font-semibold mb-4">
-                    Edit Profile
-                </h2>
+            <form onSubmit={handleUpdate} className="space-y-4">
+                <Input
+                    label="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
 
-                <form
-                    onSubmit={handleUpdate}
-                    className="space-y-4"
+                <Input
+                    label="Email"
+                    value={email}
+                    onChange={() => { }}
+                    readOnly
+                />
+
+                <Button
+                    type="submit"
+                    color="primary"
+                    isLoading={loading}
                 >
-                    <Input
-                        label="Full Name"
-                        value={name}
-                        className={'mr-2'}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-
-                    <Input
-                        label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-
-                    <Button
-                        color="primary"
-                        type="submit"
-                        className="w-full"
-                    >
-                        Save Changes
-                    </Button>
-                </form>
-            </Card>
-        </>
+                    Save Changes
+                </Button>
+            </form>
+        </Card>
     );
 }

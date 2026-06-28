@@ -59,7 +59,7 @@ const Navbar = () => {
                                         onClick={() =>
                                             setDashboardOpen(!dashboardOpen)
                                         }
-                                        className="px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+                                        className="px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100 cursor-pointer"
                                     >
                                         Dashboard
                                     </button>
@@ -70,7 +70,7 @@ const Navbar = () => {
                         )}
 
                         {user ? (
-                            <button onClick={handleSignOut} className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                            <button onClick={handleSignOut} className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 cursor-pointer">
                                 Logout
                             </button>
                         ) : (

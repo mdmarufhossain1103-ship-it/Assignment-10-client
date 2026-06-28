@@ -1,9 +1,11 @@
 'use client';
 import { createComment, deleteComment, getCommentsByIdeaId, updateComment } from '@/lib/api/user/comment';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const CommentSection = ({ ideaId, session }) => {
+    const user = session?.user;
     const [comments, setComments] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
     const [loading, setLoading] = useState(true);
@@ -128,7 +130,7 @@ const CommentSection = ({ ideaId, session }) => {
     return (
         <div className='mt-5'>
 
-            <div className="bg-black dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-6">
+           { user? ( <div className="bg-black dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] space-y-6">
 
                 <h2 className="text-lg font-bold text-white dark:text-white flex items-center gap-2">
                     💬 Discussion ({comments.length})
@@ -279,7 +281,12 @@ const CommentSection = ({ ideaId, session }) => {
                         ))
                     )}
                 </div>
-            </div>
+            </div>) : (<div>
+                <div>
+                    <h2 className='text-2xl font-bold'>Comment</h2>
+                </div>
+                <p className='mt-2 text-center'>If you comment please login. <Link href={'/login'} className='text-blue-500 font-semibold'>Login</Link> </p>
+            </div>)}
         </div>
     );
 };
