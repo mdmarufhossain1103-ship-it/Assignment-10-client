@@ -16,7 +16,7 @@ const AddArtworkPage = () => {
             ...data,
             image: image.url,
             artist: user?.name,
-            userID: user?.id, 
+            artistId: user?.id, 
             createdAt: new Date().toLocaleString(),
         }
 

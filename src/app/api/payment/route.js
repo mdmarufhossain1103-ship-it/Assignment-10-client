@@ -18,6 +18,7 @@ export async function POST(request) {
         const title = formData.get('title');
         const productId = formData.get('productId');
         const artist = formData.get('artist');
+        const artistId = formData.get('artistId');
         const image = formData.get('image')
         const purchaseDate = formData.get('purchaseDate');
         
@@ -46,6 +47,7 @@ export async function POST(request) {
                 title,
                 productId,
                 artist,
+                artistId,
                 image,
                 purchaseDate,
             },

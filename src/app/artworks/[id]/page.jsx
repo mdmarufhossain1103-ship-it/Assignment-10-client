@@ -5,6 +5,7 @@ import { artDetails } from '@/lib/api/art/art';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import CommentSection from '@/Components/CommentSection';
+import { showPaymentData } from '@/lib/actions/payment';
 
 const CalendarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-default-400">
@@ -20,6 +21,7 @@ const ArtDetailsPage = async ({ params }) => {
         headers: await headers()
     });
     const user = session?.user;
+    console.log(user)
 
     if (!art) {
         return (
@@ -37,6 +39,27 @@ const ArtDetailsPage = async ({ params }) => {
 
     const isArtistTheBuyer = user && (user.id === art.artistId || user.email === art.artist);
 
+    // --- TIER PURCHASE LIMIT VALIDATION ---
+    let isLimitReached = false;
+    let userTier = 'free'; // default tier fallback
+
+    if (user) {
+        // Fetch user's current purchases array or count
+        const totalPurchases = await showPaymentData(user.id) || [];
+        const purchaseCount = Array.isArray(totalPurchases) ? totalPurchases.length : totalPurchases;
+
+        // Dynamic check: adjusting property based on your auth structure (e.g., user.tier)
+        userTier = user.plan?.toLowerCase() || 'free';
+
+        if (userTier === 'free' && purchaseCount >= 3) {
+            isLimitReached = true;
+        } else if (userTier === 'pro' && purchaseCount >= 9) {
+            isLimitReached = true;
+        }
+        // 'premium' is unlimited, so isLimitReached stays false
+    }
+    // --------------------------------------
+
     const formattedDate = art.createdAt
         ? new Date(art.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -47,7 +70,6 @@ const ArtDetailsPage = async ({ params }) => {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-12 lg:py-16">
-            {/* Main Split Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
 
                 {/* LEFT COLUMN: Premium High-Res Artwork Showcase */}
@@ -65,7 +87,6 @@ const ArtDetailsPage = async ({ params }) => {
 
                 {/* RIGHT COLUMN: Interactive Information Dashboard */}
                 <div className="lg:col-span-5 space-y-6">
-                    {/* Category Label & Title */}
                     <div className="space-y-3">
                         <Chip
                             size="sm"
@@ -80,7 +101,6 @@ const ArtDetailsPage = async ({ params }) => {
                             {art.title}
                         </h1>
 
-                        {/* Creator Profile Chip Link */}
                         <div className="pt-1">
                             <Link
                                 href={`/artists/${art.artistId || art.artist}`}
@@ -103,7 +123,6 @@ const ArtDetailsPage = async ({ params }) => {
 
                     <hr className="border-default-100" />
 
-                    {/* Metadata Box */}
                     <div className="flex items-center gap-2 text-default-600">
                         <CalendarIcon />
                         <div className="text-xs">
@@ -114,7 +133,6 @@ const ArtDetailsPage = async ({ params }) => {
 
                     <hr className="border-default-100" />
 
-                    {/* Artwork Description Segment */}
                     <div className="space-y-2">
                         <h3 className="text-xs font-bold uppercase tracking-wider text-default-400">
                             About this masterpiece
@@ -144,48 +162,36 @@ const ArtDetailsPage = async ({ params }) => {
                                     >
                                         🚫 You own this masterpiece
                                     </Button>
+                                ) : isLimitReached ? (
+                                    <div className="space-y-2">
+                                        <Button
+                                            disabled
+                                            size="lg"
+                                            className="w-full py-6 rounded-xl font-bold text-sm bg-danger-50 text-danger-400 cursor-not-allowed border border-danger-200 shadow-none"
+                                        >
+                                            🔒 Tier Purchase Limit Reached
+                                        </Button>
+                                        <p className="text-[11px] text-center text-danger-500">
+                                            Your {userTier} plan allows a max of {userTier === 'free' ? '3' : '9'} purchases. Upgrade your subscription to unlock more.
+                                        </p>
+                                    </div>
                                 ) : (
-                                        <form action="/api/payment" method="POST">
-                                            <input
-                                                type="hidden"
-                                                name="productId"
-                                                defaultValue={art._id}
-                                            />
+                                    <form action="/api/payment" method="POST">
+                                        <input type="hidden" name="productId" defaultValue={art._id} />
+                                        <input type="hidden" name="title" defaultValue={art.title} />
+                                        <input type="hidden" name="price" defaultValue={art.price} />
+                                        <input type="hidden" name="artist" defaultValue={art.artist} />
+                                        <input type="hidden" name="artistId" defaultValue={art.artistId} />
+                                        <input type="hidden" name="image" defaultValue={art.image} />
+                                        <input type="hidden" name="purchaseDate" defaultValue={new Date().toISOString()} />
 
-                                            <input
-                                                type="hidden"
-                                                name="title"
-                                                defaultValue={art.title}
-                                            />
-
-                                            <input
-                                                type="hidden"
-                                                name="price"
-                                                defaultValue={art.price}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name="artist"
-                                                defaultValue={art.artist}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name="image"
-                                                defaultValue={art.image}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name="purchaseDate"
-                                                defaultValue={new Date().toISOString()}
-                                            />
-
-                                            <Button
-                                                type="submit"
-                                                className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide bg-blue-500 dark:bg-white text-white dark:text-black text-center shadow-md hover:opacity-90 active:scale-[0.99] transition-all duration-200"
-                                            >
-                                                Buy Now
-                                            </Button>
-                                        </form>
+                                        <Button
+                                            type="submit"
+                                            className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide bg-blue-500 dark:bg-white text-white dark:text-black text-center shadow-md hover:opacity-90 active:scale-[0.99] transition-all duration-200"
+                                        >
+                                            Buy Now
+                                        </Button>
+                                    </form>
                                 )
                             ) : (
                                 <Link

@@ -71,6 +71,23 @@ export const updateArtwork = async(id,artworksData) =>{
 }
 
 
+export const getSalesHistory = async() =>{
+    const {token} = await auth.api.getToken({
+        headers: await headers(),
+    })
+    const res = await fetch(`${baseURL}/api/payment`,{
+        method: "GET",
+        headers: {
+            "Content-Type": 'application/json',
+            authorization: `Bearer ${token}`,
+        }
+    })
+    const data = await res.json();
+    console.log(data)
+    return data;
+}
+
+
 export const getAnalytics = async() => {
     const res = await fetch(`${baseURL}/admin/analytics`)
     const data = await res.json();

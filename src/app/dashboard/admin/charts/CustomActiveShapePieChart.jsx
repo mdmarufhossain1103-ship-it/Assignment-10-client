@@ -1,17 +1,10 @@
 "use client";
 
-import React from "react";
-import { PieChart, Pie, Sector, Tooltip } from "recharts";
+import React, { useState, useMemo } from "react";
+import { PieChart, Pie, Sector, Tooltip, Cell } from "recharts";
 
-// Sample data (you can replace with API data later)
-const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-];
+const COLORS = ["#6366f1", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#06b6d4"];
 
-// Custom active shape renderer
 const renderActiveShape = (props) => {
     const {
         cx,
@@ -41,10 +34,12 @@ const renderActiveShape = (props) => {
 
     return (
         <g>
-            <text x={cx} y={cy} textAnchor="middle" fill={fill}>
+            {/* Center Text displaying category name */}
+            <text x={cx} y={cy} textAnchor="middle" fill="#374151" className="font-semibold text-sm">
                 {payload.name}
             </text>
 
+            {/* Main Sector Slice */}
             <Sector
                 cx={cx}
                 cy={cy}
@@ -55,6 +50,7 @@ const renderActiveShape = (props) => {
                 fill={fill}
             />
 
+            {/* Outer Ring Border highlight */}
             <Sector
                 cx={cx}
                 cy={cy}
@@ -65,17 +61,19 @@ const renderActiveShape = (props) => {
                 fill={fill}
             />
 
-            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} />
-
+            {/* Connecting Pointer Path */}
+            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
             <circle cx={ex} cy={ey} r={3} fill={fill} />
 
+            {/* Data Label Values */}
             <text
                 x={ex + (cos >= 0 ? 1 : -1) * 12}
                 y={ey}
                 textAnchor={textAnchor}
-                fill="#333"
+                fill="#1f2937"
+                className="text-xs font-bold"
             >
-                {`Value: ${value}`}
+                {`Artworks: ${value}`}
             </text>
 
             <text
@@ -83,28 +81,69 @@ const renderActiveShape = (props) => {
                 y={ey}
                 dy={18}
                 textAnchor={textAnchor}
-                fill="#999"
+                fill="#6b7280"
+                className="text-xs"
             >
-                {`(${(percent * 100).toFixed(2)}%)`}
+                {`(${(percent * 100).toFixed(1)}%)`}
             </text>
         </g>
     );
 };
 
-export default function CustomActiveShapePieChart() {
+export default function CustomActiveShapePieChart({ data = [] }) {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    // Group the raw data by 'category' into format: [{ name: "Painting", value: 5 }]
+    const processedChartData = useMemo(() => {
+        if (!data || data.length === 0) return [];
+
+        // If the array elements already possess explicit 'name' and 'value', bypass transformations
+        if (data[0] && "name" in data[0] && "value" in data[0]) {
+            return data;
+        }
+
+        const counts = data.reduce((acc, item) => {
+            const catName = item.category || "Uncategorized";
+            acc[catName] = (acc[catName] || 0) + 1;
+            return acc;
+        }, {});
+
+        return Object.keys(counts).map((categoryName) => ({
+            name: categoryName,
+            value: counts[categoryName],
+        }));
+    }, [data]);
+
+    const onPieEnter = (_, index) => {
+        setActiveIndex(index);
+    };
+
+    if (processedChartData.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-[400px] text-gray-400 font-medium">
+                No category metrics available.
+            </div>
+        );
+    }
+
     return (
         <div className="flex justify-center">
-            <PieChart width={500} height={400}>
+            <PieChart width={520} height={400}>
                 <Pie
+                    activeIndex={activeIndex}
                     activeShape={renderActiveShape}
-                    data={data}
+                    data={processedChartData}
                     cx="50%"
                     cy="50%"
                     innerRadius={80}
                     outerRadius={120}
-                    fill="#8884d8"
                     dataKey="value"
-                />
+                    onMouseEnter={onPieEnter}
+                >
+                    {processedChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
                 <Tooltip />
             </PieChart>
         </div>

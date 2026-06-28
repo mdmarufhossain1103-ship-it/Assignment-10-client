@@ -26,6 +26,7 @@ export default async function Success({ searchParams }) {
 
     if (status === 'complete') {
         await subscription({ ...metadata, sessionId: session_id })
+
         return (
             <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4 antialiased">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center transition-all">
