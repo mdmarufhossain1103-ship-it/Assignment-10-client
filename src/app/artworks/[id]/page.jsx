@@ -21,6 +21,7 @@ const ArtDetailsPage = async ({ params }) => {
         headers: await headers()
     });
     const user = session?.user;
+    console.log(user);
 
     if (!art) {
         return (
@@ -38,7 +39,7 @@ const ArtDetailsPage = async ({ params }) => {
 
     const isArtistTheBuyer = user && (user.id === art.artistId || user.email === art.artist);
 
-    // --- TIER PURCHASE LIMIT VALIDATION ---
+    //  TIER PURCHASE LIMIT VALIDATION 
     let isLimitReached = false;
     let userTier = 'free'; // default tier fallback
 
