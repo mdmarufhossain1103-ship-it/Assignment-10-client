@@ -60,7 +60,7 @@ export default function AdminManagementTable({ initialUsers }) {
                                 <td className="border p-2">
                                     <div className="flex gap-2 flex-wrap">
                                         <button
-                                            className="rounded bg-blue-500 px-3 py-1 text-white text-sm"
+                                            className="rounded bg-blue-500 px-3 py-1 text-white text-sm cursor-pointer"
                                             disabled={user.role === "user"}
                                             onClick={() =>
                                                 handleRoleUpdate(
@@ -73,7 +73,7 @@ export default function AdminManagementTable({ initialUsers }) {
                                         </button>
 
                                         <button
-                                            className="rounded bg-purple-500 px-3 py-1 text-white text-sm"
+                                            className="rounded bg-purple-500 px-3 py-1 text-white text-sm cursor-pointer"
                                             disabled={
                                                 user.role === "artist"
                                             }
@@ -88,7 +88,7 @@ export default function AdminManagementTable({ initialUsers }) {
                                         </button>
 
                                         <button
-                                            className="rounded bg-red-500 px-3 py-1 text-white text-sm"
+                                            className="rounded bg-red-500 px-3 py-1 text-white text-sm cursor-pointer"
                                             disabled={user.role === "admin"}
                                             onClick={() =>
                                                 handleRoleUpdate(
